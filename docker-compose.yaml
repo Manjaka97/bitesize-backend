@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+    api:
+        image: registry.gitlab.com/manjaka97/bitesize/api:latest
+        restart: unless-stopped
+        ports: 
+            - "8000:8000"
+        container_name: api
+        # Making all the necessary migrations to use our database
+        command: sh -c "python manage.py makemigrations app && python manage.py migrate && python manage.py migrate app && gunicorn config.wsgi:application --bind 0.0.0.0:8000"
+        volumes:
+            - static:/static
+        depends_on: 
+            - db
+    server:
+        image: registry.gitlab.com/manjaka97/bitesize/nginx:latest
+        restart: unless-stopped
+        ports:
+            - "80:80"
+        container_name: server
+        volumes: 
+            - static:/static
+    db:
+        image: mysql:8.0.26
+        restart: unless-stopped
+        ports:
+            - '3306:3306'
+        environment: 
+            MYSQL_DATABASE: ${DOCKER_DB}
+            # So you don't have to use root, but you can if you like
+            MYSQL_USER: ${DOCKER_USER}
+            # You can use whatever password you like
+            MYSQL_PASSWORD: ${DOCKER_PASSWORD}
+            # Password for root access
+            MYSQL_ROOT_PASSWORD: ${DOCKER_ROOT_PASSWORD}
+        container_name: db
+        volumes:
+            - data:/var/lib/mysql
+volumes:
+    static:
+    data:

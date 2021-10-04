@@ -1,0 +1,121 @@
+Sprint 1: 7/20/2021 -> 7/25/2021
+	- set up dev environment (done 7/21)
+	- have spa hosted (done 7/20)
+	- have mysql running (done 7/21)
+	- create all models and serializers (models done 7/25, serialization reported to next sprint)
+	- create functional login/signup page (done 7/21)
+	- implement facebook/google login (done 7/23, facebook is implemented but can only be activated when there is a close account feature implemented)
+
+Sprint 2: 7/26/2021 -> 7/30/2021
+	- create model serializers (done 7/26)
+	- make navbar with functional log in button which dynamically becomes log out when logged in (done 7/26)
+	- design homepage rough draft (done 7/26)
+	- create functional form to update profile (done 7/27)
+	- create functional form to create new goal (done 7/28)
+	- create functional form to create new step (done 7/28)
+	- implement update_profile api endpoint (done 7/27)
+	- implement new_goal api endpoint (done 7/27)
+	- implement new_step api endpoint (done 7/28)
+	- set up online storage for user pictures (done 7/27)
+	
+	Extra done 7/28:
+	- update_goal form and api endpoint
+	- refactorating: create a function in a separate file for access token initialization
+	- refactoring: made a separate folder for authentication files, combined login and logout button into one single file
+
+	Extra done 8/2:
+	- put access token in redux store to reduce number of calls to getAccessTokenSilently();
+	- take care of warnings
+
+	Extra done 8/3:
+	- fix images aspect ratio
+	- implement delete goal
+	- implement delete picture
+	
+Sprint 3: 8/9/2021 -> 8/13/2021
+	- put new step creation in modal (done 8/9)
+	- implement complete step (done 8/9)
+	- implement complete goal (done 8/9)
+	- find the best size for images (done 8/12)
+	- create dashboard with steps (done 8/10)
+	- populate categories table (done 8/11)
+	- redirect create goal to goal page (done 8/9)
+	- default step deadline to goal deadline (done 8/9)
+	- reset stepData when new step button is clicked (done 8/9)
+	- add completion date to goal and steps (done 8/9)
+	- only fetch incomplete goals (done 8/9)
+	- only fetch incomplete steps (done 8/9)
+
+	Extra done 8/12:
+	- add motivation on home page
+	- fix mobile responsiveness
+	- fix navbar items spacing
+
+	Extra done 8/13
+	- implement complete step from navbar
+	- fix new goal button mobile responsiveness
+	- choose font
+	- remove steps from sidebar when goal is completed
+	- reroute to home if goal is complete
+	- provide feedback with styled alerts
+
+Sprint 4: 8/16/2021 -> 8/20/2021
+	- fix sidebar checkbox checked state (done 8/16)
+	- add details and dealine to steps (done 8/16)
+	- implement update picture (done 8/17)
+	- filter goals by category (done 8/16)
+	- order goals by deadline (done 8/16)
+	- order steps by deadline (done 8/16)
+	- improve step done button (done 8/16)
+	- add separate scrollbar to sidebar (done 8/16)
+	- fix sidebar styling for long step names (done 8/16)
+	- add deadline and number of steps left for goal (done 8/17)
+	- improve font colors (done 8/17)
+	- make width different for desktop and mobile (done 8/16)
+	- fix goal picture not showing after creation (done 8/17)
+
+	Extra done 8/17
+	- move unnecessary useStates to redux store 
+	
+	Extra done 8/18
+	- create a file for api call functions
+	- cache info in redux store
+	- show completed steps
+	- make dates user-friendly
+	- auto-scroll to steps in goal page
+	- refactor html elements into functional components
+
+	Extra done 8/19
+	- add completed goals to profile
+
+Sprint 5: 8/20/2021 -> 8/27/2021
+	- add delete button to completed goals
+	- add show more to completed goals
+	- change button content to loading on submit
+	- add recurring type of step
+	- add filter to sidebar steps
+	- add further indications for dates close to today
+	- send email notifications
+	- add custom notifications settings
+	- add animations on complete
+	- add instructions and tips
+	- upload to github
+	- deploy
+
+	(Sprint completed 9/5 due to CoronaVirus)
+
+Sprint 6: 9/6/2021 -> 9/15/2021
+	- backup database
+	- implement delete profile
+	- fix redis connection
+	- enable fb login
+	- update readme
+	- create a separate production branch
+
+Sprint 7: 9/16/2021 -> 10/01/2021
+	- create a deploy branch (done 9/16)
+	- move to aws (done 9/17)
+	- implement django testing (done 9/18)
+	- implement react testing
+	- set up basic jenkins pipeline
+	- set up automatic database backup

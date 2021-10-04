@@ -1,0 +1,26 @@
+The current configuration is deployed on an AWS EC2 instance.
+Nginx, Django and MySql are deployed together, Redis is hosted by redislabs and React is hosted in a S3 bucket.
+
+Essentially, just ssh into the EC2, login to the gitlab registry to have access to the images, clone the private repository which
+contains the docker-compose file (and the database backup), and run docker-compose up. (If you're reading this from the main or production
+branch on Github, you can also use the docker-compose file in this repository. Make sure to have a .env file with the needed variables).
+
+During the initial deployment, the database will take a while to initialize, so the django api will crash. As soon as you run
+docker-compose up for the first time, stop the api container with docker stop api. Wait a few minutes until the db initialization
+is completed, then run docker start api to restart the container. You will only need to do this the very first time you create all the containers.
+Bash into the container and create a superuser if needed.
+
+Now everything should be up and running!
+
+To backup the database, run the following command to create a backup.sql file:
+docker exec db /usr/bin/mysqldump -u root --password=${DOCKER_ROOT_PASSWORD} bitesize > backup.sql
+
+To restore from a dump backup file, run the following command:
+cat backup.sql | docker exec -i db /usr/bin/mysql -u root --password=${DOCKER_ROOT_PASSWORD} bitesize
+
+To update image:
+in local directory, run deploy_image.sh
+in EC2 instance:
+    run "docker-compose pull" to get the latest images
+    run "docker-compose up -d" to rebuild outdated containers
+    run "docker image prune" to delete old images

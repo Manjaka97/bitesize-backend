@@ -1,0 +1,15 @@
+There are 2 major branches: production and main.
+Production tracks all files including .env files, and this branch is pushed to a private repository for CI/CD.
+Production is merged into main, but thanks to the .gitattributes file, the .env file in main remains empty.
+However, the main branch cannot be pushed to a public repository because the commit history contains versions of .env from Production.
+Therefore, from the main branch, we run "git checkout --orphan public" to create a public branch with no commit history, then make an initial commit.
+Then, we can push this branch to a public repository using "git push -f origin public:main". We use -f since changes are untracked so we just overwrite.
+Now we can delete this branch after pushing it.
+
+Summary:
+Create a branch for development.
+Merge development branch into Production. Push this branch to the private repository for CI/CD with "git push prod production:main".
+Merge the Production branch into the main branch.
+Checkout an orphan public branch with "git checkout --orphan public" and perform initial commit with "git commit -m 'message'"
+Push the public branch to public Github repository with "git push -f origin public:main".
+Finally, go back to the production branch with "get checkout production" and delete the public branch with "git branch -D public"

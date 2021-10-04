@@ -1,0 +1,15 @@
+. React environment files must start with REACT_APP_
+. The trailing '/' matters in the audience url
+. npm server must be restarted to apply .env file changes
+. Make sure to keep track of what operations are asynchronous, and what components must wait for moving on
+. Always check dates as Javascript needs to take timezone into account
+. Crackdown on third party cookies is tough! Safari and Firefox automatically blocks them now. Auth0 uses 
+a third party cookies if a custom domain is not provided (only in paid account). To bypass this, the token need to be stored
+in localstorage instead of third party cookies. This is specified in auth.js.
+. # celery -A config worker --loglevel=INFO --without-gossip --without-mingle --without-heartbeat -Ofair --pool=solo
+# Celery beat somehow only works when I run the celery service with the options above.
+. This is stupid but we learned this the hard way: in the celery command, --loglevel can be substituted as -l but --scheduler cannot be substituted as -s lol
+. When using the django test client, url endpoint must start with / and should not end with /
+. A script uses the location we called it from as working directory. In Bitesize, running api/deploy_image.sh would run it from the Bitesize folder instead of inside api/
+. commands in jenkins file reset after execution. We are brought back to root directory after running cd. All files must be preceded by ./
+. scripts to be executed must be made executable with chmod +x

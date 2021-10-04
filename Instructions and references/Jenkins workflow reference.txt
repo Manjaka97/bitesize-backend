@@ -1,0 +1,46 @@
+Spin up the mysql database by running docker compose -f mysql.yaml up -d. This will put it on the bitesize_default network.
+
+Run the following command to fire up a docker in docker container, which will allow jenkins to use docker inside it:
+    docker run --name jenkins-docker --detach `
+    --privileged --network bitesize_default --network-alias docker `
+    --env DOCKER_TLS_CERTDIR=/certs `
+    --volume jenkins-docker-certs:/certs/client `
+    --volume jenkins_home:/var/jenkins_home `
+    docker:dind
+The backticks are for Powershell. We put this container on the bitesize_default network as well. This way, we can access the mysql container as 'db'.
+
+Next is to create a jenkins dockerfile with the following content:
+    FROM jenkins/jenkins:2.303.1-jdk11
+    USER root
+    RUN apt-get update && apt-get install -y apt-transport-https \
+        ca-certificates curl gnupg2 \
+        software-properties-common
+    RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+    RUN apt-key fingerprint 0EBFCD88
+    RUN add-apt-repository \
+        "deb [arch=amd64] https://download.docker.com/linux/debian \
+        $(lsb_release -cs) stable"
+    RUN apt-get update && apt-get install -y docker-ce-cli
+    RUN echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+    USER jenkins
+    RUN jenkins-plugin-cli --plugins "blueocean:1.24.7 docker-workflow:1.26"
+
+Build this image: docker build -t jenkins-image .
+
+Then create the jenkins container and put it on the bitesize_default network:
+    docker run --name jenkins --detach `
+    --network bitesize_default --env DOCKER_HOST=tcp://docker:2376 `
+    --env DOCKER_CERT_PATH=/certs/client --env DOCKER_TLS_VERIFY=1 `
+    --volume jenkins_home:/var/jenkins_home `
+    --volume jenkins-docker-certs:/certs/client:ro `
+    --publish 8080:8080 --publish 50000:50000 jenkins-image
+ 
+In Jenkins, the docker plugins must be installed.
+In Manage Jenkins > configure global tools, docker must be added (just name it docker and leave installation path empty).
+In the agent specification of the jenkinsfile, give the jenkins user root access and put the docker agent on the host network (bitesize_default):
+    agent {
+        docker {
+            image 'python:3.8'
+            args '-u root:sudo --network host'
+        }
+    }
